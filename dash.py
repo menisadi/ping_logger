@@ -18,4 +18,5 @@ fig.add_trace(trace_good.data[0])
 fig.add_trace(trace_bad.data[0])
 fig.update_layout(yaxis_type="log")
 
-fig.show()
+# fig.show()
+fig.write_html("pings.html")
