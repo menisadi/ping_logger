@@ -1,1 +1,1 @@
-{% include figure.html %}
+{% include pings.html %}
