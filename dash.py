@@ -5,6 +5,13 @@ import plotly.graph_objects as go
 
 
 df = pd.read_csv("pings.csv")
+# convert 'time' to datetime
+df['time'] = pd.to_datetime(df['time'])
+# keep only the last 3 days
+# first create a datetime object for 3 days ago
+three_days_ago = pd.to_datetime('now') - pd.Timedelta(days=3)
+df = df[df['time'] > three_days_ago]
+
 df['5'] = 5  # for the time-out pings to be visible on the plot
 fig = go.Figure()
 
