@@ -1,1 +1,1 @@
-{% include pings.html %}
+{% include pings-onlile.html %}

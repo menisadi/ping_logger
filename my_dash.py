@@ -86,5 +86,7 @@ fig.update_coloraxes(showscale=False)
 
 # Save the figure
 fig.write_html("pings.html")
+# Save the figure for online display
+fig.write_html("pings_online.html", include_plotlyjs="cdn")
 # Show the figure
 fig.show()
