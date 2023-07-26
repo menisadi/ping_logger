@@ -84,4 +84,7 @@ fig.update_xaxes(
 fig.update_traces(showlegend=False)
 fig.update_coloraxes(showscale=False)
 
+# Save the figure
+fig.write_html("pings.html")
+# Show the figure
 fig.show()
