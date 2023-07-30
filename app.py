@@ -11,16 +11,28 @@ data["time"] = pd.to_datetime(data["time"])
 bad_pings = data[data["delay"] == float("inf")]
 good_pings = data[data["delay"] != float("inf")]
 
-app = Dash(__name__)
+external_stylesheets = [
+    {
+        "href": (
+            "https://fonts.googleapis.com/css2?"
+            "family=Lato:wght@400;700&display=swap"
+        ),
+        "rel": "stylesheet",
+    },
+]
+
+app = Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div(
     [
-        html.H1("Ping statistics"),
+        html.H1(children="Ping statistics", className="header-title"),
         html.Div(
             [
                 html.Div(
                     [
-                        html.H2("Ping delays"),
+                        html.H2(
+                            children="Ping delays", className="menu-title"
+                        ),
                         dcc.Graph(
                             id="ping-delays",
                             figure={
@@ -56,11 +68,13 @@ app.layout = html.Div(
                             },
                         ),
                     ],
-                    className="six columns",
+                    className="card",
                 ),
                 html.Div(
                     [
-                        html.H2("Median delay per hour"),
+                        html.H2(
+                            "Median delay per hour", className="menu-title"
+                        ),
                         dcc.Graph(
                             id="median-delay-per-hour",
                             figure={
@@ -85,52 +99,54 @@ app.layout = html.Div(
                             },
                         ),
                     ],
-                    className="six columns",
+                    className="card",
                 ),
-            ],
-            className="row",
-        ),
-        html.Div(
-            [
-                html.H2(
-                    "Median delay per day of the week and hour of the day"
-                ),
-                dcc.Graph(
-                    id="median-delay-per-day-hour",
-                    figure={
-                        "data": [
-                            {
-                                "x": data["time"].dt.dayofweek,
-                                "y": data["time"].dt.hour,
-                                "z": data["delay"],
-                                "type": "heatmap",
-                                "colorscale": "Viridis",
-                                "coloraxis": "coloraxis",
-                            },
-                        ],
-                        "layout": {
-                            "xaxis": {
-                                "title": "Day of the week",
-                                "dtick": 1,
-                                "tickformat": "%a",
-                            },
-                            "yaxis": {
-                                "title": "Hour of the day",
-                                "dtick": 1,
-                                "tickformat": "%H",
-                            },
-                            "coloraxis": {
-                                "colorscale": "Viridis",
-                                "colorbar": {
-                                    "title": "Median delay (log scale)",
-                                    "titleside": "right",
+                html.Div(
+                    [
+                        html.H2(
+                            "Median delay: "
+                            "per day of the week and hour of the day",
+                            className="menu-title",
+                        ),
+                        dcc.Graph(
+                            id="median-delay-per-day-hour",
+                            figure={
+                                "data": [
+                                    {
+                                        "x": data["time"].dt.dayofweek,
+                                        "y": data["time"].dt.hour,
+                                        "z": data["delay"],
+                                        "type": "heatmap",
+                                        "colorscale": "Viridis",
+                                        "coloraxis": "coloraxis",
+                                    },
+                                ],
+                                "layout": {
+                                    "xaxis": {
+                                        "title": "Day of the week",
+                                        "dtick": 1,
+                                        "tickformat": "%a",
+                                    },
+                                    "yaxis": {
+                                        "title": "Hour of the day",
+                                        "dtick": 1,
+                                        "tickformat": "%H",
+                                    },
+                                    "coloraxis": {
+                                        "colorscale": "Viridis",
+                                        "colorbar": {
+                                            "title": "Median delay (log scale)",
+                                            "titleside": "right",
+                                        },
+                                    },
                                 },
                             },
-                        },
-                    },
+                        ),
+                    ],
+                    className="card",
                 ),
             ],
-            className="row",
+            className="graphs-container",
         ),
     ]
 )
