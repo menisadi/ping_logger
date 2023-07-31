@@ -31,7 +31,7 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.H2(
-                            children="Ping delays", className="menu-title"
+                            children="Ping delays", className="card-title"
                         ),
                         dcc.Graph(
                             id="ping-delays",
@@ -73,7 +73,7 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.H2(
-                            "Median delay per hour", className="menu-title"
+                            "Median delay per hour", className="card-title"
                         ),
                         dcc.Graph(
                             id="median-delay-per-hour",
@@ -106,7 +106,7 @@ app.layout = html.Div(
                         html.H2(
                             "Median delay: "
                             "per day of the week and hour of the day",
-                            className="menu-title",
+                            className="card-title",
                         ),
                         dcc.Graph(
                             id="median-delay-per-day-hour",
