@@ -77,7 +77,7 @@ fig.update_xaxes(title_text="Time", row=2, col=1)
 fig.update_xaxes(
     title_text="Hour of the Day", row=2, col=1, dtick=1, tickformat="%H"
 )
-fig.update_yaxes(title_text="Day of Week", row=3, col=1, dtick=1, tick0=1)
+fig.update_yaxes(title_text="Day of Week", row=3, col=1, dtick=1)
 fig.update_xaxes(
     title_text="Hour of the Day", row=3, col=1, dtick=1, tickformat="%H"
 )

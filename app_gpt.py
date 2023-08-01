@@ -10,9 +10,9 @@ data["time"] = pd.to_datetime(data["time"])
 # consider only data from 7am to 23pm
 data = data[(data["time"].dt.hour >= 7) & (data["time"].dt.hour <= 23)]
 # consider only data from Sunday to Thursday
-data = data[
-    (data["time"].dt.dayofweek <= 3) | (data["time"].dt.dayofweek == 6)
-]
+# data = data[
+#     (data["time"].dt.dayofweek <= 3) | (data["time"].dt.dayofweek == 6)
+# ]
 
 bad_pings = data[data["delay"] == float("inf")]
 good_pings = data[data["delay"] != float("inf")]
@@ -36,13 +36,14 @@ app = Dash(__name__, external_stylesheets=external_stylesheets)
 # Create a header container
 header_container = html.Div(
     [
+        html.P(
+            children="📈",
+            className="header-emoji",
+        ),
         html.H1(children="Ping statistics", className="header-title"),
-        dcc.DatePickerRange(
-            id="date-range",
-            display_format="YYYY-MM-DD",
-            start_date=data["time"].min(),
-            end_date=data["time"].max(),
-            className="daterangepicker",
+        html.P(
+            children="Analyzing ping statistics of my internet connection",
+            className="header-description",
         ),
     ],
     className="header-container",
@@ -64,7 +65,33 @@ def update_graphs(start_date, end_date):
         (data["time"] >= start_date) & (data["time"] <= end_date)
     ]
 
+    # filter out Friday and Saturday from the data
+    # filtered_data = filtered_data[
+    #     (filtered_data["time"].dt.dayofweek <= 3)
+    #     | (filtered_data["time"].dt.dayofweek == 6)
+    # ]
+
     # Update figures using the filtered data
+
+    # Calculate the median delay per hour
+    median_delay_per_hour = (
+        filtered_data.groupby(filtered_data["time"].dt.hour)["delay"]
+        .median()
+        .reset_index()
+    )
+
+    # Calculate the median delay per day of the week and hour of the day
+    median_delay_per_day_hour = (
+        filtered_data.groupby(
+            [filtered_data["time"].dt.dayofweek, filtered_data["time"].dt.hour]
+        )["delay"]
+        .median()
+        .reset_index(level=0)
+        .rename(columns={"time": "dayofweek"})
+        .reset_index()
+        .rename(columns={"time": "hour"})
+    )
+
     ping_delays_figure = {
         "data": [
             {
@@ -107,8 +134,8 @@ def update_graphs(start_date, end_date):
     median_delay_per_hour_figure = {
         "data": [
             {
-                "x": filtered_data["time"].dt.hour,
-                "y": filtered_data["delay"],
+                "x": median_delay_per_hour["time"],
+                "y": median_delay_per_hour["delay"],
                 "type": "bar",
             },
         ],
@@ -128,21 +155,22 @@ def update_graphs(start_date, end_date):
     median_delay_per_day_hour_figure = {
         "data": [
             {
-                "x": filtered_data["time"].dt.dayofweek,
-                "y": filtered_data["time"].dt.hour,
-                "z": filtered_data["delay"],
+                "y": median_delay_per_day_hour["dayofweek"],
+                "x": median_delay_per_day_hour["hour"],
+                "z": median_delay_per_day_hour["delay"],
                 "type": "heatmap",
                 "colorscale": "Viridis",
                 "coloraxis": "coloraxis",
             },
         ],
         "layout": {
-            "xaxis": {
+            "yaxis": {  # xaxis is the day of the week
                 "title": "Day of the week",
-                "dtick": 1,
-                "tickformat": "%a",
+                "tickmode": "array",
+                "tickvals": [0, 1, 2, 3, 4, 5, 6],
+                "ticktext": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
             },
-            "yaxis": {
+            "xaxis": {
                 "title": "Hour of the day",
                 "dtick": 1,
                 "tickformat": "%H",
@@ -154,6 +182,8 @@ def update_graphs(start_date, end_date):
                     "titleside": "right",
                 },
             },
+            "autosize": True,
+            "aspectratio": 1,
         },
     }
 
@@ -169,6 +199,18 @@ app.layout = html.Div(
     [
         # Use the header_container here
         header_container,
+        html.Div(
+            [
+                dcc.DatePickerRange(
+                    id="date-range",
+                    display_format="YYYY-MM-DD",
+                    start_date=data["time"].min(),
+                    end_date=data["time"].max(),
+                    className="daterangepicker",
+                ),
+            ],
+            className="date-range-container",
+        ),
         html.Div(
             [
                 html.Div(
