@@ -168,8 +168,8 @@ def update_graphs(start_date, end_date):
             "yaxis": {
                 "title": "Day of the week",
                 "tickmode": "array",
-                "tickvals": [6, 0, 1, 2, 3, 4, 5],
-                "ticktext": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                "tickvals": [6, 0, 1, 2, 3, 4],
+                "ticktext": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
                 "type": "category",
             },
             "xaxis": {
