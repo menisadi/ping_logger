@@ -9,10 +9,8 @@ data["time"] = pd.to_datetime(data["time"])
 
 # consider only data from 7am to 23pm
 data = data[(data["time"].dt.hour >= 7) & (data["time"].dt.hour <= 23)]
-# consider only data from Sunday to Thursday
-# data = data[
-#     (data["time"].dt.dayofweek <= 3) | (data["time"].dt.dayofweek == 6)
-# ]
+# do not consider data from Saturday
+data = data[data["time"].dt.dayofweek != 5]
 
 bad_pings = data[data["delay"] == float("inf")]
 good_pings = data[data["delay"] != float("inf")]
