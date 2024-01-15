@@ -55,7 +55,7 @@ heatmap_trace = go.Heatmap(
     x=median_delay_per_day_hour.columns,
     y=median_delay_per_day_hour.index,
     z=median_delay_per_day_hour.values,
-    colorscale="Viridis",
+    colorscale="Purples",
     coloraxis="coloraxis",
 )
 
