@@ -47,7 +47,9 @@ remapping_days = {
 median_delay_per_day_hour = median_delay_per_day_hour.rename(remapping_days)
 # Create bar plot for median delay per hour
 bar_trace = go.Bar(
-    x=median_delay_per_hour.index, y=median_delay_per_hour.values
+    x=median_delay_per_hour.index,
+    y=median_delay_per_hour.values,
+    marker_color="darkgreen",
 )
 
 # Create heatmap plot for median delay per day of the week and hour of the day
@@ -55,7 +57,8 @@ heatmap_trace = go.Heatmap(
     x=median_delay_per_day_hour.columns,
     y=median_delay_per_day_hour.index,
     z=median_delay_per_day_hour.values,
-    colorscale="Purples",
+    autocolorscale=False,
+    colorscale="YlOrRd",
     coloraxis="coloraxis",
 )
 
@@ -83,6 +86,8 @@ fig.update_xaxes(
 )
 fig.update_traces(showlegend=False)
 fig.update_coloraxes(showscale=False)
+
+fig.layout.template = "plotly_dark"
 
 # Save the figure
 fig.write_html("pings.html")
