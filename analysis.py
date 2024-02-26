@@ -21,7 +21,11 @@ def read_log(file_name):
         if d == "\n":
             return np.inf
         else:
-            return float(d.split()[-2][5:])
+            try:
+                return float(d.split()[-2][5:])
+            except ValueError as err:
+                print(f"{err}\nBad line: {d}")
+                return np.inf
 
     data_lines = [(t[:-1], clean_delay(d)) for t, d in data_lines]
 
