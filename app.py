@@ -18,8 +18,7 @@ good_pings = data[data["delay"] != float("inf")]
 external_stylesheets = [
     {
         "href": (
-            "https://fonts.googleapis.com/css2?"
-            "family=Lato:wght@400;700&display=swap"
+            "https://fonts.googleapis.com/css2?" "family=Lato:wght@400;700&display=swap"
         ),
         "rel": "stylesheet",
     },
@@ -56,9 +55,7 @@ header_container = html.Div(
     Input("date-range", "end_date"),
 )
 def update_graphs(start_date, end_date):
-    filtered_data = data.loc[
-        (data["time"] >= start_date) & (data["time"] <= end_date)
-    ]
+    filtered_data = data.loc[(data["time"] >= start_date) & (data["time"] <= end_date)]
 
     # keep only the "good" pings
     filtered_good_data = filtered_data[filtered_data["delay"] != float("inf")]
@@ -96,22 +93,15 @@ def update_graphs(start_date, end_date):
     ping_delays_figure = {
         "data": [
             {
-                "x": filtered_data[filtered_data["delay"] != float("inf")][
-                    "time"
-                ],
-                "y": filtered_data[filtered_data["delay"] != float("inf")][
-                    "delay"
-                ],
+                "x": filtered_data[filtered_data["delay"] != float("inf")]["time"],
+                "y": filtered_data[filtered_data["delay"] != float("inf")]["delay"],
                 "type": "scatter",
                 "mode": "markers",
                 "name": "Good pings",
             },
             {
-                "x": filtered_data[filtered_data["delay"] == float("inf")][
-                    "time"
-                ],
-                "y": [5]
-                * len(filtered_data[filtered_data["delay"] == float("inf")]),
+                "x": filtered_data[filtered_data["delay"] == float("inf")]["time"],
+                "y": [5] * len(filtered_data[filtered_data["delay"] == float("inf")]),
                 "type": "scatter",
                 "mode": "markers",
                 "name": "Bad pings",
@@ -224,9 +214,7 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        html.H2(
-                            children="Ping delays", className="card-title"
-                        ),
+                        html.H2(children="Ping delays", className="card-title"),
                         dcc.Graph(
                             id="ping-delays",
                             figure={},
@@ -236,9 +224,7 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     [
-                        html.H2(
-                            "Median delay per hour", className="card-title"
-                        ),
+                        html.H2("Median delay per hour", className="card-title"),
                         dcc.Graph(
                             id="median-delay-per-hour",
                             figure={},
@@ -249,8 +235,7 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.H2(
-                            "Median delay: "
-                            "per day of the week and hour of the day",
+                            "Median delay: " "per day of the week and hour of the day",
                             className="card-title",
                         ),
                         dcc.Graph(
